@@ -1,0 +1,80 @@
+import Link from "next/link";
+import { ADMIN_ORDERS, STATUS_STYLES } from "@/lib/adminData";
+
+export const metadata = { title: "Orders" };
+
+const FILTERS = [["all", "All"], ["processing", "Processing"], ["completed", "Completed"], ["refunded", "Refunded"], ["failed", "Failed"]];
+
+export default async function AdminOrdersPage({ searchParams }) {
+  const sp = await searchParams;
+  const status = sp.status || "all";
+  const orders = status === "all" ? ADMIN_ORDERS : ADMIN_ORDERS.filter((o) => o.status === status);
+  const total = orders.reduce((n, o) => n + o.total, 0);
+
+  return (
+    <div className="p-6 md:p-10">
+      <h1 className="text-3xl">Orders</h1>
+      <p className="text-charcoal-700 text-sm mt-1 mb-6">
+        {orders.length} order{orders.length !== 1 ? "s" : ""} · {status !== "all" ? `${status} — ` : ""}${total.toFixed(2)} value · Phase 6: WooCommerce orders se sync hoga
+      </p>
+
+      {/* status filter pills */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {FILTERS.map(([val, label]) => (
+          <Link key={val} href={val === "all" ? "/admin/orders" : `/admin/orders?status=${val}`}
+            className={`px-4 py-1.5 rounded-full border text-xs font-semibold transition ${
+              status === val ? "bg-forest-600 text-white border-forest-600" : "border-sage-300 text-charcoal-700 hover:border-forest-500"
+            }`}>
+            {label}
+          </Link>
+        ))}
+      </div>
+
+      <div className="rounded-2xl bg-white border border-sage-300/50 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[760px]">
+            <thead className="bg-sage-100/70">
+              <tr className="text-left">
+                <th className="px-5 py-3 font-heading">Order</th>
+                <th className="px-5 py-3 font-heading">Customer</th>
+                <th className="px-5 py-3 font-heading">Date</th>
+                <th className="px-5 py-3 font-heading">Items</th>
+                <th className="px-5 py-3 font-heading">Total</th>
+                <th className="px-5 py-3 font-heading">Status</th>
+                <th className="px-5 py-3 font-heading">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-sage-300/40">
+              {orders.map((o) => (
+                <tr key={o.id} className="hover:bg-cream-100/50 transition">
+                  <td className="px-5 py-3 font-heading font-bold">#{o.id}</td>
+                  <td className="px-5 py-3">
+                    <p className="font-semibold">{o.customer}</p>
+                    <p className="text-xs text-sage-500">{o.email}</p>
+                  </td>
+                  <td className="px-5 py-3 text-charcoal-700">
+                    {new Date(o.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                    <span className="text-xs text-sage-500 ml-1">{new Date(o.date).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}</span>
+                  </td>
+                  <td className="px-5 py-3 text-charcoal-700">{o.items}</td>
+                  <td className="px-5 py-3 font-heading font-bold text-forest-700">${o.total.toFixed(2)}</td>
+                  <td className="px-5 py-3">
+                    <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${STATUS_STYLES[o.status]}`}>{o.status}</span>
+                  </td>
+                  <td className="px-5 py-3">
+                    <button className="text-xs font-semibold text-forest-600 hover:underline cursor-not-allowed opacity-60" title="Phase 6 — WooCommerce order update API se enable hoga">
+                      View / Update
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {orders.length === 0 && (
+                <tr><td colSpan={7} className="px-5 py-10 text-center text-sage-500">Is status mein koi order nahi.</td></tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
