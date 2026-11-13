@@ -1,6 +1,7 @@
 import { getAdminProducts } from "@/lib/adminData";
 import AddProductButton from "@/components/admin/AddProductButton";
 import ProductRowActions from "@/components/admin/ProductRowActions";
+import PageHeader from "@/components/admin/PageHeader";
 
 export const metadata = { title: "Products" };
 
@@ -9,26 +10,24 @@ export default async function AdminProductsPage() {
 
   return (
     <div className="p-6 md:p-10">
-      <div className="flex items-end justify-between flex-wrap gap-3 mb-8">
-        <div>
-          <h1 className="text-3xl">Products</h1>
-          <p className="text-charcoal-700 text-sm mt-1">{products.length} products · Supabase se live — add, edit, remove sab yahin</p>
-        </div>
-        <AddProductButton />
-      </div>
+      <PageHeader
+        title="Products"
+        subtitle={`${products.length} products · Supabase se live — add, edit, remove sab yahin`}
+        actions={<AddProductButton />}
+      />
 
-      <div className="rounded-2xl bg-white border border-sage-300/50 overflow-hidden">
+      <div className="rounded-2xl bg-white border border-sage-300/50 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[780px]">
-            <thead className="bg-sage-100/70">
+            <thead className="bg-sage-100/70 border-b border-sage-300/50">
               <tr className="text-left">
-                <th className="px-5 py-3 font-heading">Product</th>
-                <th className="px-5 py-3 font-heading">Category</th>
-                <th className="px-5 py-3 font-heading">Price</th>
-                <th className="px-5 py-3 font-heading">Stock</th>
-                <th className="px-5 py-3 font-heading">Rating</th>
-                <th className="px-5 py-3 font-heading">Status</th>
-                <th className="px-5 py-3 font-heading">Actions</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Product</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Category</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Price</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Stock</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Rating</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Status</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-sage-300/40">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PageHeader from "@/components/admin/PageHeader";
 
 export const metadata = { title: "Settings" };
 
@@ -10,35 +11,37 @@ export default function AdminSettingsPage() {
     ["Payment gateway selection", "Business registration country pehle lock hogi (WooPayments Pakistan se eligible nahi)", false],
     ["Gateway headless compatibility proof", "Store API / Checkout Block support verify hoga", false],
     ["Real product/inventory sync", "Mock data → WooCommerce catalog migration", false],
-    ["Email service (Resend/SMTP)", "Order confirmation + marketing emails", false],
+    ["Custom email domain (Resend)", "Key live hai — domain verify ke baad customers ko emails", false],
   ];
 
   return (
     <div className="p-6 md:p-10 max-w-3xl">
-      <h1 className="text-3xl">Settings</h1>
-      <p className="text-charcoal-700 text-sm mt-1 mb-8">Store configuration — abhi demo mode, Phase 6/7 mein live settings.</p>
+      <PageHeader
+        title="Settings"
+        subtitle="Store configuration — Phase 6/7 mein live settings."
+      />
 
-      <div className="rounded-2xl bg-white border border-sage-300/50 p-6 mb-6">
+      <div className="rounded-2xl bg-white border border-sage-300/50 shadow-sm p-6 mb-6">
         <h2 className="font-heading font-bold text-lg mb-4">🚀 Go-Live Checklist</h2>
         <div className="space-y-3">
-          {checklist.map(([task, note, done]) => (
-            <div key={task} className="flex items-start gap-3 rounded-xl border border-sage-300/40 px-4 py-3">
+          {checklist.map(([task, note, done], i) => (
+            <div key={task} className="flex items-start gap-3 rounded-xl border border-sage-300/40 bg-cream-100/30 px-4 py-3">
               <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 ${done ? "bg-forest-600 text-white" : "bg-cream-200 text-sage-500"}`}>
-                {done ? "✓" : ""}
+                {done ? "✓" : i + 1}
               </span>
               <div>
                 <p className="text-sm font-semibold">{task}</p>
-                <p className="text-xs text-sage-500">{note}</p>
+                <p className="text-xs text-sage-500 mt-0.5">{note}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="rounded-2xl bg-white border border-sage-300/50 p-6 mb-6">
+      <div className="rounded-2xl bg-white border border-sage-300/50 shadow-sm p-6 mb-6">
         <h2 className="font-heading font-bold text-lg mb-3">🏪 Store Defaults (demo)</h2>
         <dl className="text-sm divide-y divide-sage-300/40">
-          {[["Store Name", "PawFavoritees"], ["Tagline", "Love Them. Spoil Them."], ["Currency", "USD ($)"], ["Language", "English (US)"], ["Categories", "Dogs, Cats (all-pets ready)"], ["Free Shipping Threshold", "$49.00"], ["Est. Tax Rate", "8% (demo — production: state-wise)"], ["WooCommerce SDK", "✅ Installed (@woocommerce/woocommerce-rest-api)"]].map(([k, v]) => (
+          {[["Store Name", "PawFavoritees"], ["Tagline", "Love Them. Spoil Them."], ["Currency", "USD ($)"], ["Language", "English (US)"], ["Categories", "Dogs, Cats (all-pets ready)"], ["Free Shipping Threshold", "$49.00"], ["Est. Tax Rate", "8% (demo — production: state-wise)"], ["Database", "✅ Supabase Postgres (live)"], ["Email", "✅ Resend (test mode)"], ["WooCommerce SDK", "✅ Installed (@woocommerce/woocommerce-rest-api)"]].map(([k, v]) => (
             <div key={k} className="flex justify-between py-2.5">
               <dt className="text-sage-500">{k}</dt>
               <dd className="font-semibold text-charcoal-700 text-right">{v}</dd>

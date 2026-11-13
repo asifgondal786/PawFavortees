@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { SALES_14D, revenue, STATUS_STYLES, productStock, getAdminProducts, getAdminOrders } from "@/lib/adminData";
+import { SALES_14D, STATUS_STYLES, productStock, getAdminProducts, getAdminOrders } from "@/lib/adminData";
+import PageHeader from "@/components/admin/PageHeader";
 
 export const metadata = { title: "Dashboard" };
 
@@ -12,7 +13,7 @@ export default async function AdminDashboard() {
   const processingN = orders.filter((o) => o.status === "processing").length;
 
   const statCards = [
-    { label: "Revenue (all orders)", value: `$${rev.toFixed(2)}`, icon: "💵", sub: ordersN ? `${ordersN} orders se live` : "Abhi koi order nahi", up: ordersN > 0 },
+    { label: "Revenue", value: `$${rev.toFixed(2)}`, icon: "💵", sub: ordersN ? `${ordersN} orders se live` : "Abhi koi order nahi", up: ordersN > 0 },
     { label: "Orders", value: ordersN, icon: "🧾", sub: processingN ? `${processingN} processing` : "Sab settle ho gaye", up: true },
     { label: "Avg Order Value", value: `$${aovV.toFixed(2)}`, icon: "📈", sub: ordersN ? "Supabase se live" : "Mock data", up: ordersN > 0 },
     { label: "Products Live", value: products.length, icon: "📦", sub: "2 categories active", up: null },
@@ -24,26 +25,24 @@ export default async function AdminDashboard() {
 
   return (
     <div className="p-6 md:p-10">
-      <div className="flex items-end justify-between flex-wrap gap-3 mb-8">
-        <div>
-          <h1 className="text-3xl">Dashboard</h1>
-          <p className="text-charcoal-700 text-sm mt-1">
-            {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })} · Store overview
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Link href="/admin/products" className="border border-sage-300 text-charcoal-700 text-sm font-semibold px-4 py-2 rounded-full hover:border-forest-500 transition">Manage Products</Link>
-          <Link href="/admin/orders" className="bg-forest-600 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-forest-700 transition">View Orders</Link>
-        </div>
-      </div>
+      <PageHeader
+        title="Dashboard"
+        subtitle={`${new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" })} · Store overview`}
+        actions={
+          <>
+            <Link href="/admin/products" className="border border-sage-300 text-charcoal-700 text-sm font-semibold px-4 py-2 rounded-full hover:border-forest-500 hover:bg-white transition">Manage Products</Link>
+            <Link href="/admin/orders" className="bg-forest-600 text-white text-sm font-semibold px-4 py-2 rounded-full hover:bg-forest-700 shadow-sm transition">View Orders</Link>
+          </>
+        }
+      />
 
       {/* stat cards */}
       <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         {statCards.map((s) => (
-          <div key={s.label} className="rounded-2xl bg-white border border-sage-300/50 p-5">
+          <div key={s.label} className="rounded-2xl bg-white border border-sage-300/50 shadow-sm p-5 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-sage-500 uppercase tracking-wide">{s.label}</span>
-              <span className="text-2xl">{s.icon}</span>
+              <span className="text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">{s.label}</span>
+              <span className="text-xl">{s.icon}</span>
             </div>
             <p className="font-heading font-extrabold text-3xl text-forest-700 mt-2">{s.value}</p>
             <p className={`text-xs mt-1 font-semibold ${s.up === null ? "text-sage-500" : s.up ? "text-forest-600" : "text-red-500"}`}>{s.sub}</p>
@@ -52,9 +51,12 @@ export default async function AdminDashboard() {
       </div>
 
       {/* sales chart */}
-      <div className="rounded-2xl bg-white border border-sage-300/50 p-6 mb-8">
+      <div className="rounded-2xl bg-white border border-sage-300/50 shadow-sm p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-heading font-bold text-lg">Sales — Last 14 Days</h2>
+          <div>
+            <h2 className="font-heading font-bold text-lg">Sales — Last 14 Days</h2>
+            <p className="text-xs text-sage-500 mt-0.5">Demo chart · Phase 6: WooCommerce sales data se replace hoga</p>
+          </div>
           <span className="text-xs bg-sage-100 text-forest-700 font-bold px-3 py-1 rounded-full">Total ${rev.toFixed(2)}</span>
         </div>
         <div className="flex items-end gap-1.5 h-40">

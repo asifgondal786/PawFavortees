@@ -1,4 +1,5 @@
 import { ADMIN_CUSTOMERS } from "@/lib/adminData";
+import PageHeader from "@/components/admin/PageHeader";
 
 export const metadata = { title: "Customers" };
 
@@ -7,36 +8,37 @@ export default function AdminCustomersPage() {
 
   return (
     <div className="p-6 md:p-10">
-      <h1 className="text-3xl">Customers</h1>
-      <p className="text-charcoal-700 text-sm mt-1 mb-8">
-        {ADMIN_CUSTOMERS.length} customers · ${totalSpent.toFixed(2)} lifetime value · Phase 7: WooCommerce customers se sync hoga
-      </p>
+      <PageHeader
+        title="Customers"
+        subtitle={`${ADMIN_CUSTOMERS.length} customers · $${totalSpent.toFixed(2)} lifetime value · Demo data — Phase 7: Supabase auth users se sync hoga`}
+      />
 
       <div className="grid sm:grid-cols-3 gap-4 mb-8">
-        <div className="rounded-2xl bg-white border border-sage-300/50 p-5">
-          <span className="text-xs font-semibold text-sage-500 uppercase tracking-wide">Total Customers</span>
-          <p className="font-heading font-extrabold text-3xl text-forest-700 mt-2">{ADMIN_CUSTOMERS.length}</p>
-        </div>
-        <div className="rounded-2xl bg-white border border-sage-300/50 p-5">
-          <span className="text-xs font-semibold text-sage-500 uppercase tracking-wide">Lifetime Value</span>
-          <p className="font-heading font-extrabold text-3xl text-forest-700 mt-2">${totalSpent.toFixed(0)}</p>
-        </div>
-        <div className="rounded-2xl bg-white border border-sage-300/50 p-5">
-          <span className="text-xs font-semibold text-sage-500 uppercase tracking-wide">Avg per Customer</span>
-          <p className="font-heading font-extrabold text-3xl text-forest-700 mt-2">${(totalSpent / ADMIN_CUSTOMERS.length).toFixed(2)}</p>
-        </div>
+        {[
+          ["Total Customers", ADMIN_CUSTOMERS.length, "👥"],
+          ["Lifetime Value", `$${totalSpent.toFixed(0)}`, "💵"],
+          ["Avg per Customer", `$${(totalSpent / ADMIN_CUSTOMERS.length).toFixed(2)}`, "📈"],
+        ].map(([label, value, icon]) => (
+          <div key={label} className="rounded-2xl bg-white border border-sage-300/50 shadow-sm p-5 hover:shadow-md transition-shadow">
+            <div className="flex items-center justify-between">
+              <span className="text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">{label}</span>
+              <span className="text-xl">{icon}</span>
+            </div>
+            <p className="font-heading font-extrabold text-3xl text-forest-700 mt-2">{value}</p>
+          </div>
+        ))}
       </div>
 
-      <div className="rounded-2xl bg-white border border-sage-300/50 overflow-hidden">
+      <div className="rounded-2xl bg-white border border-sage-300/50 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[720px]">
-            <thead className="bg-sage-100/70">
+            <thead className="bg-sage-100/70 border-b border-sage-300/50">
               <tr className="text-left">
-                <th className="px-5 py-3 font-heading">Customer</th>
-                <th className="px-5 py-3 font-heading">Location</th>
-                <th className="px-5 py-3 font-heading">Orders</th>
-                <th className="px-5 py-3 font-heading">Total Spent</th>
-                <th className="px-5 py-3 font-heading">Joined</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Customer</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Location</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Orders</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Total Spent</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Joined</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-sage-300/40">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAdminOrders, STATUS_STYLES } from "@/lib/adminData";
 import OrderStatusEditor from "@/components/admin/OrderStatusEditor";
+import PageHeader from "@/components/admin/PageHeader";
 
 export const metadata = { title: "Orders" };
 
@@ -15,10 +16,10 @@ export default async function AdminOrdersPage({ searchParams }) {
 
   return (
     <div className="p-6 md:p-10">
-      <h1 className="text-3xl">Orders</h1>
-      <p className="text-charcoal-700 text-sm mt-1 mb-6">
-        {orders.length} order{orders.length !== 1 ? "s" : ""} · {status !== "all" ? `${status} — ` : ""}${total.toFixed(2)} value · Supabase se live
-      </p>
+      <PageHeader
+        title="Orders"
+        subtitle={`${orders.length} order${orders.length !== 1 ? "s" : ""} · ${status !== "all" ? `${status} — ` : ""}$${total.toFixed(2)} value · Supabase se live`}
+      />
 
       {/* status filter pills */}
       <div className="flex flex-wrap gap-2 mb-6">
@@ -32,18 +33,18 @@ export default async function AdminOrdersPage({ searchParams }) {
         ))}
       </div>
 
-      <div className="rounded-2xl bg-white border border-sage-300/50 overflow-hidden">
+      <div className="rounded-2xl bg-white border border-sage-300/50 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm min-w-[760px]">
-            <thead className="bg-sage-100/70">
+            <thead className="bg-sage-100/70 border-b border-sage-300/50">
               <tr className="text-left">
-                <th className="px-5 py-3 font-heading">Order</th>
-                <th className="px-5 py-3 font-heading">Customer</th>
-                <th className="px-5 py-3 font-heading">Date</th>
-                <th className="px-5 py-3 font-heading">Items</th>
-                <th className="px-5 py-3 font-heading">Total</th>
-                <th className="px-5 py-3 font-heading">Status</th>
-                <th className="px-5 py-3 font-heading">Action</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Order</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Customer</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Date</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Items</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Total</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Status</th>
+                <th className="px-5 py-3 text-[10.5px] font-bold text-sage-500 uppercase tracking-[0.12em]">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-sage-300/40">
