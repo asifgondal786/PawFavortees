@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "", remember: true });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetOk] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("reset") === "ok");
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +43,12 @@ export default function LoginPage() {
           💡 <b>{supabaseConfigured ? "Real authentication (Supabase)" : "Demo mode"}</b> —
           {supabaseConfigured ? " account database mein hai, har device par kaam karega." : " koi bhi email/password chalega."}
         </div>
+
+        {resetOk && (
+          <div className="rounded-xl bg-forest-100 text-forest-700 text-sm px-4 py-2.5 mb-4">
+            ✓ Password update ho gaya — ab naye password se sign in karein.
+          </div>
+        )}
 
         {error && <p className="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2.5 mb-4">{error}</p>}
 

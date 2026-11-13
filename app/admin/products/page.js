@@ -1,26 +1,25 @@
-import { getAdminProducts, productStock } from "@/lib/adminData";
+import { getAdminProducts } from "@/lib/adminData";
+import AddProductButton from "@/components/admin/AddProductButton";
+import ProductRowActions from "@/components/admin/ProductRowActions";
 
 export const metadata = { title: "Products" };
 
 export default async function AdminProductsPage() {
   const products = await getAdminProducts();
-  const rows = products.map((p) => ({ ...p, stock: productStock(p.id) }));
 
   return (
     <div className="p-6 md:p-10">
       <div className="flex items-end justify-between flex-wrap gap-3 mb-8">
         <div>
           <h1 className="text-3xl">Products</h1>
-          <p className="text-charcoal-700 text-sm mt-1">{rows.length} products · Phase 6: WooCommerce catalog se sync hoga</p>
+          <p className="text-charcoal-700 text-sm mt-1">{products.length} products · Supabase se live — add, edit, remove sab yahin</p>
         </div>
-        <button className="bg-forest-600 text-white text-sm font-semibold px-5 py-2.5 rounded-full hover:bg-forest-700 transition cursor-not-allowed opacity-60" title="Phase 6 — WooCommerce product creation API se connect hoga">
-          + Add Product
-        </button>
+        <AddProductButton />
       </div>
 
       <div className="rounded-2xl bg-white border border-sage-300/50 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[720px]">
+          <table className="w-full text-sm min-w-[780px]">
             <thead className="bg-sage-100/70">
               <tr className="text-left">
                 <th className="px-5 py-3 font-heading">Product</th>
@@ -29,10 +28,11 @@ export default async function AdminProductsPage() {
                 <th className="px-5 py-3 font-heading">Stock</th>
                 <th className="px-5 py-3 font-heading">Rating</th>
                 <th className="px-5 py-3 font-heading">Status</th>
+                <th className="px-5 py-3 font-heading">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-sage-300/40">
-              {rows.map((p) => (
+              {products.map((p) => (
                 <tr key={p.id} className="hover:bg-cream-100/50 transition">
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-3">
@@ -45,8 +45,8 @@ export default async function AdminProductsPage() {
                   </td>
                   <td className="px-5 py-3 capitalize text-charcoal-700">{p.category}</td>
                   <td className="px-5 py-3">
-                    <span className="font-bold text-forest-700">${p.price.toFixed(2)}</span>
-                    {p.compareAt && <span className="text-xs text-sage-500 line-through ml-2">${p.compareAt.toFixed(2)}</span>}
+                    <span className="font-bold text-forest-700">${Number(p.price).toFixed(2)}</span>
+                    {p.compareAt && <span className="text-xs text-sage-500 line-through ml-2">${Number(p.compareAt).toFixed(2)}</span>}
                   </td>
                   <td className="px-5 py-3">
                     <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
@@ -59,14 +59,20 @@ export default async function AdminProductsPage() {
                   <td className="px-5 py-3">
                     <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-forest-100 text-forest-700">Active</span>
                   </td>
+                  <td className="px-5 py-3">
+                    <ProductRowActions product={p} />
+                  </td>
                 </tr>
               ))}
+              {products.length === 0 && (
+                <tr><td colSpan={7} className="px-5 py-10 text-center text-sage-500">Koi product nahi — pehla product add karo!</td></tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
       <p className="text-xs text-sage-500 mt-4">
-        ℹ️ Edit/Delete operations Phase 6 mein WooCommerce REST API se enable honge — read-only demo abhi.
+        ℹ️ Remove soft delete hai (DB mein history bachta hai) — Phase 6: WooCommerce catalog se two-way sync hoga.
       </p>
     </div>
   );

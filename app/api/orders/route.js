@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import { sendOrderConfirmationEmail } from "@/lib/email";
 
 // Orders API — Supabase-backed.
 // POST: checkout se order create (service role, server-only)
@@ -70,6 +71,12 @@ export async function POST(request) {
     }));
     const { error: itemErr } = await sb.from("order_items").insert(rows);
     if (itemErr) throw itemErr;
+
+    // Confirmation email — RESEND_API_KEY ho to bhejta hai, warna console skip log.
+    // Non-blocking: order flow email fail se nahi rukta.
+    const emailOrder = { ...order, email, address: payload.address };
+    const emailItems = rows.map((r) => ({ name: r.name, qty: r.qty, price: r.price, emoji: items.find((i) => String(i.slug) === r.product_slug)?.emoji }));
+    sendOrderConfirmationEmail(emailOrder, emailItems).catch(() => {});
 
     return NextResponse.json({ orderNumber: order.order_number, id: order.id }, { status: 201 });
   } catch (e) {
