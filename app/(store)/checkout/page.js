@@ -61,22 +61,49 @@ export default function CheckoutPage() {
     if (err) { setError(err); return; }
     setError("");
     setProcessing(true);
-    // Demo gateway processing — Phase 6: real gateway (Stripe/PayPal/hosted) + webhook verification.
-    setTimeout(() => {
-      const order = {
-        id: "PAW-" + Date.now().toString(36).toUpperCase().slice(-6),
+    // Demo gateway processing — Phase 6: real gateway + webhook verification.
+    // Order SERVER (Supabase) mein save hota hai; localStorage sirf backup.
+    setTimeout(async () => {
+      const payload = {
+        email: form.email.trim(),
+        name: `${form.firstName} ${form.lastName}`.trim(),
+        address: `${form.address1}${form.address2 ? ", " + form.address2 : ""}, ${form.city}, ${form.state} ${form.zip}`,
+        ship_method: ship,
+        pay_method: pay,
+        subtotal: +subtotal.toFixed(2),
+        shipping: shippingCost,
+        tax,
+        total,
+        items: items.map((i) => ({ slug: i.slug, name: i.name, qty: i.qty, price: i.price })),
+      };
+      let orderNo = null;
+      try {
+        const res = await fetch("/api/orders", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (res.ok) {
+          const d = await res.json();
+          orderNo = d.orderNumber;
+        }
+      } catch {} // network fail → local backup chalega
+      // localStorage backup (offline tolerance + instant history)
+      const localOrder = {
+        id: orderNo || "PAW-" + Date.now().toString(36).toUpperCase().slice(-6),
         date: new Date().toISOString(),
         items, subtotal: +subtotal.toFixed(2), shipping: shippingCost, tax, total,
         shipMethod: ship, payMethod: pay,
-        email: form.email, name: `${form.firstName} ${form.lastName}`,
-        address: `${form.address1}${form.address2 ? ", " + form.address2 : ""}, ${form.city}, ${form.state} ${form.zip}`,
+        email: payload.email, name: payload.name, address: payload.address,
         status: "paid-demo",
       };
-      const orders = JSON.parse(localStorage.getItem("pawfav-orders") || "[]");
-      orders.push(order);
-      localStorage.setItem("pawfav-orders", JSON.stringify(orders));
+      try {
+        const orders = JSON.parse(localStorage.getItem("pawfav-orders") || "[]");
+        orders.push(localOrder);
+        localStorage.setItem("pawfav-orders", JSON.stringify(orders));
+      } catch {}
       clear();
-      router.push(`/order-received?order=${order.id}`);
+      router.push(`/order-received?order=${localOrder.id}&email=${encodeURIComponent(payload.email)}`);
     }, 1800);
   };
 

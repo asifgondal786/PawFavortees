@@ -1,21 +1,22 @@
 import Link from "next/link";
-import { ADMIN_ORDERS, STATUS_STYLES } from "@/lib/adminData";
+import { getAdminOrders, STATUS_STYLES } from "@/lib/adminData";
 
 export const metadata = { title: "Orders" };
 
-const FILTERS = [["all", "All"], ["processing", "Processing"], ["completed", "Completed"], ["refunded", "Refunded"], ["failed", "Failed"]];
+const FILTERS = [["all", "All"], ["paid", "Paid"], ["processing", "Processing"], ["completed", "Completed"], ["refunded", "Refunded"], ["failed", "Failed"]];
 
 export default async function AdminOrdersPage({ searchParams }) {
   const sp = await searchParams;
   const status = sp.status || "all";
-  const orders = status === "all" ? ADMIN_ORDERS : ADMIN_ORDERS.filter((o) => o.status === status);
+  const all = await getAdminOrders();
+  const orders = status === "all" ? all : all.filter((o) => o.status === status);
   const total = orders.reduce((n, o) => n + o.total, 0);
 
   return (
     <div className="p-6 md:p-10">
       <h1 className="text-3xl">Orders</h1>
       <p className="text-charcoal-700 text-sm mt-1 mb-6">
-        {orders.length} order{orders.length !== 1 ? "s" : ""} · {status !== "all" ? `${status} — ` : ""}${total.toFixed(2)} value · Phase 6: WooCommerce orders se sync hoga
+        {orders.length} order{orders.length !== 1 ? "s" : ""} · {status !== "all" ? `${status} — ` : ""}${total.toFixed(2)} value · Supabase se live
       </p>
 
       {/* status filter pills */}

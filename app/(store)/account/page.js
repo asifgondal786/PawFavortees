@@ -1,11 +1,77 @@
 "use client";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
+import { useEffect, useState } from "react";
+
+// DB row (orders + order_items) → display shape (OrderDetails/TrackOrder jaisa hi)
+function dbToView(o) {
+  return {
+    id: o.order_number,
+    date: o.created_at,
+    items: o.order_items || [],
+    itemCount: (o.order_items || []).reduce((n, i) => n + (i.qty || 1), 0),
+    total: Number(o.total),
+    status: o.status || "paid",
+    source: "db",
+  };
+}
+
+// localStorage backup order → display shape
+function localToView(o) {
+  return {
+    id: o.id,
+    date: o.date,
+    itemCount: (o.items || []).length,
+    total: Number(o.total),
+    status: o.status || "paid-demo",
+    source: "local",
+  };
+}
+
+const STATUS_PILL = {
+  paid: "bg-forest-100 text-forest-700",
+  "paid-demo": "bg-forest-100 text-forest-700",
+  processing: "bg-blue-100 text-blue-700",
+  shipped: "bg-blue-100 text-blue-700",
+  completed: "bg-forest-100 text-forest-700",
+  refunded: "bg-sand-300/60 text-charcoal-700",
+  failed: "bg-red-100 text-red-700",
+  pending: "bg-cream-200 text-charcoal-700",
+  cancelled: "bg-red-100 text-red-700",
+};
 
 export default function AccountPage() {
   const user = useAuth((s) => s.user);
   const logout = useAuth((s) => s.logout);
-  const orders = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("pawfav-orders") || "[]") : [];
+  const [orders, setOrders] = useState(null); // null = loading
+  const [source, setSource] = useState(null); // "db" | "local"
+
+  useEffect(() => {
+    if (!user?.email) return;
+    let alive = true;
+    (async () => {
+      // 1) Server (Supabase) se history
+      try {
+        const res = await fetch(`/api/orders?email=${encodeURIComponent(user.email)}`);
+        if (res.ok) {
+          const d = await res.json();
+          if (alive && (d.orders || []).length) {
+            setOrders(d.orders.map(dbToView));
+            setSource("db");
+            return;
+          }
+        }
+      } catch {}
+      // 2) localStorage backup (offline/demo orders)
+      let local = [];
+      try { local = JSON.parse(localStorage.getItem("pawfav-orders") || "[]"); } catch {}
+      if (alive) {
+        setOrders(local.map(localToView).sort((a, b) => new Date(b.date) - new Date(a.date)));
+        setSource(local.length ? "local" : "db");
+      }
+    })();
+    return () => { alive = false; };
+  }, [user?.email]);
 
   if (!user) {
     return (
@@ -37,7 +103,9 @@ export default function AccountPage() {
         <div className="rounded-2xl bg-white border border-sage-300/50 p-5">
           <div className="text-2xl mb-2">📦</div>
           <h3 className="font-heading font-bold text-sm">Orders</h3>
-          <p className="text-xs text-charcoal-700 mt-1">{orders.length} order{orders.length !== 1 ? "s" : ""} placed</p>
+          <p className="text-xs text-charcoal-700 mt-1">
+            {orders === null ? "…" : `${orders.length} order${orders.length !== 1 ? "s" : ""} placed`}
+          </p>
         </div>
         <div className="rounded-2xl bg-white border border-sage-300/50 p-5">
           <div className="text-2xl mb-2">🤍</div>
@@ -52,27 +120,44 @@ export default function AccountPage() {
       </div>
 
       <h2 className="text-xl mb-4">Order History</h2>
-      {orders.length === 0 ? (
+      {orders === null ? (
+        <div className="rounded-2xl bg-white border border-sage-300/50 p-10 text-center text-sage-500 text-sm">Loading orders… 🐾</div>
+      ) : orders.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-sage-300 p-10 text-center">
           <p className="text-4xl mb-3">🛒</p>
           <p className="text-sm text-charcoal-700">No orders yet — your pet is waiting! 😺</p>
           <Link href="/shop" className="inline-block mt-4 bg-forest-600 text-white text-sm font-heading font-bold px-6 py-2.5 rounded-full hover:bg-forest-700 transition">Start Shopping</Link>
         </div>
       ) : (
-        <div className="space-y-3">
-          {orders.slice().reverse().map((o) => (
-            <div key={o.id} className="rounded-2xl bg-white border border-sage-300/50 p-4 flex items-center justify-between gap-4">
-              <div>
-                <p className="font-heading font-bold text-sm">#{o.id}</p>
-                <p className="text-xs text-sage-500">{new Date(o.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} · {o.items.length} item{o.items.length !== 1 ? "s" : ""}</p>
+        <>
+          {source === "db" && (
+            <p className="text-xs text-forest-600 font-semibold mb-3">✓ Live from database — har device par available</p>
+          )}
+          {source === "local" && (
+            <p className="text-xs text-sage-500 mb-3">Is device ke local orders dikh rahe hain (database se koi match nahi hua).</p>
+          )}
+          <div className="space-y-3">
+            {orders.map((o) => (
+              <div key={o.id} className="rounded-2xl bg-white border border-sage-300/50 p-4 flex items-center justify-between gap-4">
+                <div>
+                  <p className="font-heading font-bold text-sm">#{o.id}</p>
+                  <p className="text-xs text-sage-500">
+                    {new Date(o.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} · {o.itemCount} item{o.itemCount !== 1 ? "s" : ""}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="font-heading font-extrabold text-forest-700">${Number(o.total).toFixed(2)}</p>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${STATUS_PILL[o.status] || "bg-cream-200 text-charcoal-700"}`}>
+                    {String(o.status).toUpperCase()}
+                  </span>
+                </div>
               </div>
-              <div className="text-right">
-                <p className="font-heading font-extrabold text-forest-700">${o.total.toFixed(2)}</p>
-                <p className="text-xs text-forest-600 font-semibold">✓ Paid (demo)</p>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          <div className="mt-4 text-center">
+            <Link href="/track-order" className="text-xs font-semibold text-forest-600 hover:underline">Order details dekhni hain? Track order karo →</Link>
+          </div>
+        </>
       )}
     </div>
   );

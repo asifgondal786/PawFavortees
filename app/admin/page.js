@@ -1,18 +1,20 @@
 import Link from "next/link";
-import { ADMIN_ORDERS, SALES_14D, revenue, ordersCount, aov, STATUS_STYLES, productStock, getAdminProducts } from "@/lib/adminData";
+import { SALES_14D, revenue, STATUS_STYLES, productStock, getAdminProducts, getAdminOrders } from "@/lib/adminData";
 
 export const metadata = { title: "Dashboard" };
 
 export default async function AdminDashboard() {
   const products = await getAdminProducts();
-  const rev = revenue();
-  const orders = ordersCount();
-  const aovV = aov();
+  const orders = await getAdminOrders();
+  const rev = orders.reduce((n, o) => n + o.total, 0);
+  const ordersN = orders.length;
+  const aovV = rev / Math.max(1, ordersN);
+  const processingN = orders.filter((o) => o.status === "processing").length;
 
   const statCards = [
-    { label: "Revenue (14d)", value: `$${rev.toFixed(2)}`, icon: "💵", sub: "+18% vs last period", up: true },
-    { label: "Orders", value: orders, icon: "🧾", sub: `${ADMIN_ORDERS.filter((o) => o.status === "processing").length} processing`, up: true },
-    { label: "Avg Order Value", value: `$${aovV.toFixed(2)}`, icon: "📈", sub: "+4.2% vs last period", up: true },
+    { label: "Revenue (all orders)", value: `$${rev.toFixed(2)}`, icon: "💵", sub: ordersN ? `${ordersN} orders se live` : "Abhi koi order nahi", up: ordersN > 0 },
+    { label: "Orders", value: ordersN, icon: "🧾", sub: processingN ? `${processingN} processing` : "Sab settle ho gaye", up: true },
+    { label: "Avg Order Value", value: `$${aovV.toFixed(2)}`, icon: "📈", sub: ordersN ? "Supabase se live" : "Mock data", up: ordersN > 0 },
     { label: "Products Live", value: products.length, icon: "📦", sub: "2 categories active", up: null },
   ];
 
@@ -75,16 +77,19 @@ export default async function AdminDashboard() {
             <Link href="/admin/orders" className="text-xs font-semibold text-forest-600 hover:underline">View all →</Link>
           </div>
           <div className="space-y-2">
-            {ADMIN_ORDERS.slice(0, 5).map((o) => (
+            {orders.slice(0, 5).map((o) => (
               <div key={o.id} className="flex items-center gap-3 rounded-xl border border-sage-300/40 px-4 py-3">
                 <div className="flex-1 min-w-0">
                   <p className="font-heading font-bold text-sm">#{o.id}</p>
                   <p className="text-xs text-sage-500 truncate">{o.customer} · {o.items} item{o.items !== 1 ? "s" : ""}</p>
                 </div>
                 <span className={`text-[10px] font-bold px-2 py-1 rounded-full ${STATUS_STYLES[o.status]}`}>{o.status}</span>
-                <span className="font-heading font-bold text-sm text-forest-700">${o.total.toFixed(2)}</span>
+                <span className="font-heading font-bold text-sm text-forest-700">${Number(o.total).toFixed(2)}</span>
               </div>
             ))}
+            {orders.length === 0 && (
+              <p className="text-sm text-charcoal-700">Abhi tak koi order nahi — pehla order checkout se aayega. 🐾</p>
+            )}
           </div>
         </div>
 

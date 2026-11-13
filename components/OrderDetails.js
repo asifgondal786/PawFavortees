@@ -1,12 +1,55 @@
 "use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+
+// DB row → display shape
+function dbToView(o) {
+  return {
+    id: o.order_number,
+    date: o.created_at,
+    items: (o.order_items || []).map((i) => ({
+      slug: i.product_slug, name: i.name, qty: i.qty,
+      price: Number(i.price), emoji: i.emoji || "🐾", tint: i.tint || "from-sage-100 to-cream-100",
+    })),
+    subtotal: Number(o.subtotal), shipping: Number(o.shipping), tax: Number(o.tax),
+    total: Number(o.total),
+    name: o.name, email: o.email, address: o.address,
+    shipMethod: o.ship_method, payMethod: o.pay_method, status: o.status,
+  };
+}
 
 export default function OrderDetails() {
   const sp = useSearchParams();
-  const id = sp.get("order");
-  const orders = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("pawfav-orders") || "[]") : [];
-  const order = orders.find((o) => o.id === id);
+  const orderNo = sp.get("order");
+  const email = sp.get("email");
+  const [order, setOrder] = useState(null);
+  const [src, setSrc] = useState(null); // "db" | "local"
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      if (orderNo && email) {
+        try {
+          const res = await fetch(`/api/orders?order=${encodeURIComponent(orderNo)}&email=${encodeURIComponent(email)}`);
+          if (res.ok) {
+            const d = await res.json();
+            if (alive) { setOrder(dbToView(d.order)); setSrc("db"); setLoading(false); return; }
+          }
+        } catch {} // fallback below
+      }
+      // localStorage backup
+      const orders = JSON.parse(localStorage.getItem("pawfav-orders") || "[]");
+      const o = orders.find((x) => x.id === orderNo);
+      if (alive) { setOrder(o ? { ...o, items: o.items, status: o.status } : null); setSrc(o ? "local" : null); setLoading(false); }
+    })();
+    return () => { alive = false; };
+  }, [orderNo, email]);
+
+  if (loading) {
+    return <div className="max-w-2xl mx-auto px-4 py-16 text-center text-sage-500">Loading order… 🐾</div>;
+  }
 
   if (!order) {
     return (
@@ -25,7 +68,7 @@ export default function OrderDetails() {
         <p className="text-6xl mb-4">🎉🐾</p>
         <h1 className="text-3xl">Order Confirmed!</h1>
         <p className="text-charcoal-700 text-sm mt-2">
-          Thanks {order.name.split(" ")[0]} — your order is placed (demo payment). Confirmation email &ldquo;{order.email}&rdquo; par jayegi.
+          Thanks {order.name.split(" ")[0]} — your order is placed. Confirmation email &ldquo;{order.email}&rdquo; par jayegi.
         </p>
       </div>
 
@@ -35,15 +78,15 @@ export default function OrderDetails() {
             <p className="text-xs text-sage-500 uppercase tracking-wide font-semibold">Order Number</p>
             <p className="font-heading font-extrabold text-xl text-forest-700">#{order.id}</p>
           </div>
-          <span className="bg-sage-100 text-forest-700 text-xs font-bold px-3 py-1.5 rounded-full">
-            ✓ Payment {order.payMethod === "card" ? "Approved (demo)" : "Pending gateway"}
+          <span className={`text-xs font-bold px-3 py-1.5 rounded-full ${src === "db" ? "bg-forest-100 text-forest-700" : "bg-cream-200 text-charcoal-700"}`}>
+            {src === "db" ? "✓ Saved in database" : "✓ Saved (local demo)"}
           </span>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-xs text-sage-500 uppercase tracking-wide font-semibold mb-1">Order Date</p>
-            <p>{new Date(order.date).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}</p>
+            <p>{order.date ? new Date(order.date).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }) : "—"}</p>
           </div>
           <div>
             <p className="text-xs text-sage-500 uppercase tracking-wide font-semibold mb-1">Shipping To</p>
@@ -65,17 +108,17 @@ export default function OrderDetails() {
         </div>
 
         <div className="border-t border-sage-300/40 pt-4 space-y-1.5 text-sm">
-          <div className="flex justify-between"><span className="text-sage-500">Subtotal</span><span>${order.subtotal.toFixed(2)}</span></div>
-          <div className="flex justify-between"><span className="text-sage-500">Shipping ({order.shipMethod})</span><span>{order.shipping === 0 ? "FREE" : `$${order.shipping.toFixed(2)}`}</span></div>
-          <div className="flex justify-between"><span className="text-sage-500">Tax</span><span>${order.tax.toFixed(2)}</span></div>
+          <div className="flex justify-between"><span className="text-sage-500">Subtotal</span><span>${Number(order.subtotal).toFixed(2)}</span></div>
+          <div className="flex justify-between"><span className="text-sage-500">Shipping ({order.shipMethod})</span><span>{Number(order.shipping) === 0 ? "FREE" : `$${Number(order.shipping).toFixed(2)}`}</span></div>
+          <div className="flex justify-between"><span className="text-sage-500">Tax</span><span>${Number(order.tax).toFixed(2)}</span></div>
           <div className="flex justify-between font-heading font-extrabold text-lg pt-2 border-t border-sage-300/40">
-            <span>Total Paid</span><span className="text-forest-700">${order.total.toFixed(2)}</span>
+            <span>Total Paid</span><span className="text-forest-700">${Number(order.total).toFixed(2)}</span>
           </div>
         </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
-        <Link href="/shop" className="bg-forest-600 text-white font-heading font-bold px-7 py-3 rounded-full hover:bg-forest-700 transition text-sm text-center">Continue Shopping</Link>
+        <Link href="/track-order" className="bg-forest-600 text-white font-heading font-bold px-7 py-3 rounded-full hover:bg-forest-700 transition text-sm text-center">Track This Order</Link>
         <Link href="/account" className="border border-sage-300 text-charcoal-700 font-heading font-bold px-7 py-3 rounded-full hover:border-forest-500 transition text-sm text-center">View My Orders</Link>
       </div>
     </div>
