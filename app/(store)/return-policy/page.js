@@ -8,46 +8,46 @@ export const metadata = {
 export default function ReturnPolicyPage() {
   return (
     <InfoShell
-      title="Return & Refund Policy ↩️"
-      subtitle="30-day hassle-free returns. Happy pets — ya paisa wapas."
+      title="Return & Refund Policy 🐾"
+      subtitle="30-day hassle-free returns. A happy pet — or your money back."
       updated="November 2026"
     >
       <Section title="Return Window">
         <p>
-          Delivery ke <b>30 din</b> ke andar unused, original packaging wale items return kar sakte hain.
-          Kash koosi items ke liye koi questions nahi — bas reason batayein, RMA number jari hoga.
+          Items can be returned within <b>30 days</b> of delivery if unused and in original packaging.
+          There are no questions asked for eligible items — just tell us the reason and an RMA number will be issued.
         </p>
       </Section>
 
       <Section title="How to Start a Return">
         <ol className="list-decimal pl-6 space-y-2">
-          <li><a href="/contact" className="text-forest-600 underline">Contact page</a> se ya support@pawfavoritees.com par request bhejein — order number aur reason ke saath.</li>
-          <li>Hum 1 business day mein RMA number aur US return address share karenge.</li>
-          <li>Item securely pack kar ke trackable shipping se bhejein.</li>
-          <li>Item receive + inspect hone ke baad refund process hota hai.</li>
+          <li>Send a request via the <a href="/contact" className="text-forest-600 underline">Contact page</a> or at support@pawfavoritees.com — with your order number and reason.</li>
+          <li>We will share an RMA number and US return address within 1 business day.</li>
+          <li>Pack the item securely and ship it with trackable shipping.</li>
+          <li>Once the item is received and inspected, the refund is processed.</li>
         </ol>
       </Section>
 
       <Section title="Refunds">
         <ul className="list-disc pl-6 space-y-2">
-          <li>Refund original payment method par process hota hai (5–10 business days).</li>
-          <li>Original shipping charges non-refundable hain, except damaged/wrong item cases.</li>
-          <li>Damaged ya defective items par return shipping ka kharcha bhi hum uthate hain.</li>
+          <li>Refunds are processed to the original payment method (5-10 business days).</li>
+          <li>Original shipping charges are non-refundable, except for damaged/wrong item cases.</li>
+          <li>For damaged or defective items, we also cover the return shipping cost.</li>
         </ul>
       </Section>
 
       <Section title="Non-Returnable Items">
         <ul className="list-disc pl-6 space-y-2">
-          <li>Opened food, treats ya consumables (safety reasons).</li>
-          <li>Gift cards (jab launch hon).</li>
-          <li>Final-sale/clearance items — product page par clearly marked.</li>
+          <li>Opened food, treats or consumables (for safety reasons).</li>
+          <li>Gift cards (when they launch).</li>
+          <li>Final-sale/clearance items — clearly marked on the product page.</li>
         </ul>
       </Section>
 
       <Section title="Damaged or Wrong Item?">
         <p>
-          Delivery ke <b>48 hours</b> ke andar photos ke saath contact karein — replacement ya full refund,
-          dono options ke saath hum turant process karte hain.
+          Contact us within <b>48 hours</b> of delivery with photos — we process a replacement or full refund
+          right away, with both options available to you.
         </p>
       </Section>
     </InfoShell>

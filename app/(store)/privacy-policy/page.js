@@ -2,71 +2,71 @@ import InfoShell, { Section } from "@/components/InfoShell";
 
 export const metadata = {
   title: "Privacy Policy",
-  description: "How PawFavoritees collects, uses and protects your personal information — including your privacy choices.",
+  description: "How PawFavoritees collects, uses and protects your personal information - including your privacy choices.",
 };
 
 export default function PrivacyPolicyPage() {
   return (
     <InfoShell
-      title="Privacy Policy 🔒"
-      subtitle="Aap ki privacy humare liye seriously matter karti hai. Ye policy batati hai hum kya data collect karte hain aur kyun."
+      title="Privacy Policy 🐾"
+      subtitle="Your privacy matters to us. This policy explains what data we collect and why."
       updated="November 2026"
     >
       <Section title="1. Information We Collect">
         <ul className="list-disc pl-6 space-y-2">
           <li><b>Order information:</b> name, email, phone, shipping/billing address, order details.</li>
-          <li><b>Account information:</b> email, password (hashed — kabhi plain text store nahi hota).</li>
-          <li><b>Usage data:</b> pages visited, products viewed — site improvement ke liye, aggregated form mein.</li>
-          <li><b>Local storage:</b> cart aur wishlist aap ke browser mein store hote hain, humare servers pe nahi (jab tak account se sync na ho).</li>
+          <li><b>Account information:</b> email, password (hashed — never stored in plain text).</li>
+          <li><b>Usage data:</b> pages visited, products viewed — in aggregated form, for site improvement.</li>
+          <li><b>Local storage:</b> cart and wishlist are stored in your browser, not on our servers (unless synced with an account).</li>
         </ul>
       </Section>
 
       <Section title="2. How We Use Information">
         <ul className="list-disc pl-6 space-y-2">
-          <li>Orders process, ship aur track karne ke liye.</li>
-          <li>Customer support provide karne ke liye.</li>
-          <li>Security, fraud prevention aur legal compliance ke liye.</li>
-          <li>Marketing emails — <b>sirf aap ki consent par</b>, unsubscribe link har email mein.</li>
+          <li>To process, ship and track orders.</li>
+          <li>To provide customer support.</li>
+          <li>For security, fraud prevention and legal compliance.</li>
+          <li>Marketing emails — <b>only with your consent</b>, with an unsubscribe link in every email.</li>
         </ul>
       </Section>
 
       <Section title="3. What We Never Do">
         <ul className="list-disc pl-6 space-y-2">
-          <li>Card details store karna — payments gateway ke tokenized/secure flow se process hoti hain.</li>
-          <li>Aap ka personal data sell karna.</li>
-          <li>BinA bin k consents ke baghair marketing emails bhejna (CAN-SPAM compliant).</li>
+          <li>Store card details — payments are processed through the gateway&apos;s tokenized/secure flow.</li>
+          <li>Sell your personal data.</li>
+          <li>Send marketing emails without consent (CAN-SPAM compliant).</li>
         </ul>
       </Section>
 
       <Section title="4. Sharing With Service Providers">
         <p>
-          Order fulfilment ke liye hum data share karte hain: payment processor, shipping carriers aur
-          email service provider — sirf itni information jitni kaam ke liye zaroori hai.
+          To fulfil orders we share data with: payment processor, shipping carriers and
+          our email service provider — only the information necessary for the job.
         </p>
       </Section>
 
       <Section title="5. Your Privacy Choices">
         <ul className="list-disc pl-6 space-y-2">
-          <li><b>Access &amp; correction:</b> account settings se apni information dekh aur update kar sakte hain.</li>
-          <li><b>Deletion:</b> account deletion request support@pawfavoritees.com par.</li>
-          <li><b>Marketing opt-out:</b> kisi bhi email ke unsubscribe link se, ya Contact page se.</li>
-          <li><b>California residents:</b> CCPA/CPRA rights ke tihat access, deletion aur opt-out ke haq hain — requests email par.</li>
+          <li><b>Access &amp; correction:</b> view and update your information in account settings.</li>
+          <li><b>Deletion:</b> request account deletion at support@pawfavoritees.com.</li>
+          <li><b>Marketing opt-out:</b> via the unsubscribe link in any email, or through the Contact page.</li>
+          <li><b>California residents:</b> under CCPA/CPRA you have the right to access, deletion and opt-out — requests by email.</li>
         </ul>
       </Section>
 
       <Section title="6. Data Security &amp; Retention">
         <p>
-          HTTPS encryption, server-side secrets, role-based access aur regular backups humari baseline
-          security practices hain. Data utne hi time tak retain hota hai jitna legal/account purposes ke liye zaroori ho.
+          HTTPS encryption, server-side secrets, role-based access and regular backups are our baseline
+          security practices. Data is retained only as long as necessary for legal/account purposes.
         </p>
       </Section>
 
       <Section title="7. Children's Privacy">
-        <p>Site 18+ users ke liye hai. Hum jaan-boojh kar 13 se kam umar ke bachon ka data collect nahi karte.</p>
+        <p>The site is intended for users 18+. We do not knowingly collect data from children under 13.</p>
       </Section>
 
       <Section title="8. Changes to This Policy">
-        <p>Koi bhi material change yahan publish hoga aur &ldquo;Last updated&rdquo; date update ki jayegi.</p>
+        <p>Any material change will be published here and the &ldquo;Last updated&rdquo; date will be refreshed.</p>
       </Section>
     </InfoShell>
   );

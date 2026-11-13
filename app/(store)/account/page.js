@@ -118,7 +118,7 @@ export default function AccountPage() {
         <div className="rounded-2xl bg-white border border-sage-300/50 p-5">
           <div className="text-2xl mb-2">⚙️</div>
           <h3 className="font-heading font-bold text-sm">Account Details</h3>
-          <p className="text-xs text-charcoal-700 mt-1">Phase 7 mein editable honge</p>
+          <p className="text-xs text-charcoal-700 mt-1">Editable in Phase 7</p>
         </div>
       </div>
 
@@ -137,7 +137,7 @@ export default function AccountPage() {
             <p className="text-xs text-forest-600 font-semibold mb-3">✓ Live from database — har device par available</p>
           )}
           {source === "local" && (
-            <p className="text-xs text-sage-500 mb-3">Is device ke local orders dikh rahe hain (database se koi match nahi hua).</p>
+            <p className="text-xs text-sage-500 mb-3">Showing local orders from this device (no database match found).</p>
           )}
           <div className="space-y-3">
             {orders.map((o) => (
@@ -158,7 +158,7 @@ export default function AccountPage() {
             ))}
           </div>
           <div className="mt-4 text-center">
-            <Link href="/track-order" className="text-xs font-semibold text-forest-600 hover:underline">Order details dekhni hain? Track order karo →</Link>
+            <Link href="/track-order" className="text-xs font-semibold text-forest-600 hover:underline">Want order details? Track your order →</Link>
           </div>
         </>
       )}

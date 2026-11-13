@@ -19,15 +19,15 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
     if (form.password.length < 8) {
-      setError("Password kam se kam 8 characters ka hona chahiye.");
+      setError("Password must be at least 8 characters.");
       return;
     }
     if (form.password !== form.confirm) {
-      setError("Passwords match nahi kar rahe.");
+      setError("Passwords do not match.");
       return;
     }
     if (!form.terms) {
-      setError("Please Terms & Conditions aur Privacy Policy accept karein.");
+      setError("Please accept the Terms & Conditions and Privacy Policy.");
       return;
     }
     setLoading(true);
@@ -47,8 +47,8 @@ export default function RegisterPage() {
       router.push("/account");
     } catch (err) {
       const msg = (err.message || "").includes("already registered")
-        ? "Ye email pehle se registered hai — Sign in karein."
-        : err.message || "Account create nahi hua.";
+        ? "This email is already registered — please sign in."
+        : err.message || "Account creation failed.";
       setError(msg);
       setLoading(false);
     }
@@ -65,12 +65,12 @@ export default function RegisterPage() {
       <div className="rounded-3xl bg-white border border-sage-300/50 shadow-sm p-7">
         <div className="rounded-xl bg-sage-100/70 px-4 py-2.5 text-xs text-charcoal-700 mb-5">
           💡 <b>{supabaseConfigured ? "Real authentication (Supabase)" : "Demo mode"}</b> —
-          {supabaseConfigured ? " account database mein save hoga, har device par kaam karega." : " account locally save hota hai."}
+          {supabaseConfigured ? " your account will be saved in the database, and works on every device." : " accounts are saved locally."}
         </div>
 
         {confirmSent && (
           <div className="rounded-xl bg-blue-50 border border-blue-200 text-blue-700 text-sm px-4 py-3 mb-4">
-            📧 Confirmation email <b>{form.email}</b> par bhej diya gaya hai — inbox mein link click karein, phir Sign In karein.
+            📧 A confirmation email has been sent to <b>{form.email}</b> — click the link in your inbox, then sign in.
           </div>
         )}
 

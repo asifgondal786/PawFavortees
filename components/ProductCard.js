@@ -2,13 +2,18 @@ import Link from "next/link";
 import WishlistButton from "@/components/WishlistButton";
 
 export default function ProductCard({ p }) {
+  const img = p.specs?._image;
   return (
     <Link
       href={`/product/${p.slug}`}
       className="group rounded-2xl bg-white border border-sage-300/50 overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition"
     >
-      <div className={`aspect-[4/3] bg-gradient-to-br ${p.tint} flex items-center justify-center relative`}>
-        <span className="text-6xl group-hover:scale-110 transition-transform">{p.emoji}</span>
+      <div className={`aspect-[4/3] bg-gradient-to-br ${p.tint} flex items-center justify-center relative overflow-hidden`}>
+        {img ? (
+          <img src={img} alt={p.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        ) : (
+          <span className="text-6xl group-hover:scale-110 transition-transform">{p.emoji}</span>
+        )}
         {p.badge && (
           <span className="absolute top-3 left-3 bg-forest-600 text-cream-50 text-[11px] font-bold px-2.5 py-1 rounded-full">
             {p.badge}

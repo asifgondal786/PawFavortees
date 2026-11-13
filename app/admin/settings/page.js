@@ -8,7 +8,7 @@ export default function AdminSettingsPage() {
     ["WooCommerce hosting & domain", "User se pending — milte hi WordPress + WooCommerce install hoga", false],
     ["Store API connection (customer-facing)", "WooCommerceProvider likha jayega — same provider interface", false],
     ["REST API keys (.env server-side)", "lib/woocommerce.js ready hai — sirf WOO_STORE_URL + keys bharne hain", false],
-    ["Payment gateway selection", "Business registration country pehle lock hogi (WooPayments Pakistan se eligible nahi)", false],
+    ["Payment gateway selection", "Business registration country must be locked first (WooPayments is not eligible from Pakistan)", false],
     ["Gateway headless compatibility proof", "Store API / Checkout Block support verify hoga", false],
     ["Real product/inventory sync", "Mock data → WooCommerce catalog migration", false],
     ["Custom email domain (Resend)", "Key live hai — domain verify ke baad customers ko emails", false],
@@ -18,7 +18,7 @@ export default function AdminSettingsPage() {
     <div className="p-6 md:p-10 max-w-3xl">
       <PageHeader
         title="Settings"
-        subtitle="Store configuration — Phase 6/7 mein live settings."
+        subtitle="Store configuration — live settings arrive in Phase 6/7."
       />
 
       <div className="rounded-2xl bg-white border border-sage-300/50 shadow-sm p-6 mb-6">
@@ -53,8 +53,8 @@ export default function AdminSettingsPage() {
       <div className="rounded-2xl bg-gradient-to-br from-forest-600 to-forest-700 text-cream-50 p-6">
         <h2 className="font-heading font-bold text-lg mb-2">Next: Hosting Integration 🔌</h2>
         <p className="text-sm text-cream-100/85">
-          Domain + hosting milte hi: WordPress/WooCommerce install → provider swap → gateway compatibility proof →
-          real checkout. Koi page/component refactor nahi hoga — sirf <b>lib/provider.js</b> aur <b>lib/woocommerce.js</b> ka kaam.
+          Once domain + hosting are ready: WordPress/WooCommerce install → provider swap → gateway compatibility proof →
+          real checkout. No page/component refactoring — only <b>lib/provider.js</b> and <b>lib/woocommerce.js</b> are touched.
         </p>
         <Link href="/contact" className="inline-block mt-4 bg-cream-50 text-forest-700 text-sm font-heading font-bold px-5 py-2.5 rounded-full hover:bg-cream-100 transition">
           Questions? Contact Page

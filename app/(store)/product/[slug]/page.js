@@ -29,9 +29,13 @@ export default async function ProductPage({ params }) {
       </nav>
 
       <div className="grid lg:grid-cols-2 gap-10">
-        {/* gallery placeholder */}
+        {/* gallery */}
         <div className={`aspect-square rounded-3xl bg-gradient-to-br ${p.tint} flex items-center justify-center relative overflow-hidden`}>
-          <span className="text-[9rem]">{p.emoji}</span>
+          {p.specs?._image ? (
+            <img src={p.specs._image} alt={p.name} className="absolute inset-0 w-full h-full object-cover" />
+          ) : (
+            <span className="text-[9rem]">{p.emoji}</span>
+          )}
           {discount > 0 && (
             <span className="absolute top-5 left-5 bg-sand-500 text-charcoal-900 font-bold px-4 py-1.5 rounded-full text-sm">
               Save {discount}%
@@ -75,7 +79,7 @@ export default async function ProductPage({ params }) {
           <div className="mt-6 rounded-2xl border border-sage-300/60 overflow-hidden">
             <h3 className="font-heading font-bold bg-sage-100/70 px-5 py-3">Specifications</h3>
             <dl className="divide-y divide-sage-300/40 text-sm">
-              {Object.entries(p.specs).map(([k, v]) => (
+              {Object.entries(p.specs).filter(([k]) => !k.startsWith("_")).map(([k, v]) => (
                 <div key={k} className="flex justify-between px-5 py-2.5">
                   <dt className="text-sage-500">{k}</dt>
                   <dd className="font-semibold text-charcoal-700">{String(v)}</dd>

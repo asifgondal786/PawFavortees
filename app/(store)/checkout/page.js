@@ -47,10 +47,10 @@ export default function CheckoutPage() {
     if (!/^\d{5}(-\d{4})?$/.test(form.zip.trim())) return "Please enter a valid US ZIP code.";
     if (pay === "card") {
       const digits = form.cardNumber.replace(/\s+/g, "");
-      if (!/^\d{15,16}$/.test(digits)) return "Card number 15–16 digits ka hona chahiye.";
-      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(form.cardExpiry.trim())) return "Card expiry MM/YY format mein ho.";
-      if (!/^\d{3,4}$/.test(form.cardCvc.trim())) return "CVC 3–4 digits ka hona chahiye.";
-      if (!form.cardName.trim()) return "Cardholder ka naam zaroori hai.";
+      if (!/^\d{15,16}$/.test(digits)) return "Card number must be 15–16 digits.";
+      if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(form.cardExpiry.trim())) return "Card expiry must be in MM/YY format.";
+      if (!/^\d{3,4}$/.test(form.cardCvc.trim())) return "CVC must be 3–4 digits.";
+      if (!form.cardName.trim()) return "Cardholder name is required.";
     }
     return "";
   };
@@ -112,7 +112,7 @@ export default function CheckoutPage() {
       <div className="max-w-xl mx-auto px-4 py-16 text-center">
         <p className="text-5xl mb-4">🛒</p>
         <h1 className="text-2xl mb-2">Your cart is empty</h1>
-        <p className="text-charcoal-700 text-sm mb-6">Checkout karne ke liye pehle kuch add karein.</p>
+        <p className="text-charcoal-700 text-sm mb-6">Add something first to check out.</p>
         <Link href="/shop" className="inline-block bg-forest-600 text-white font-heading font-bold px-8 py-3 rounded-full hover:bg-forest-700 transition">Go to Shop</Link>
       </div>
     );
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
     <div className="max-w-6xl mx-auto px-4 py-10">
       <h1 className="text-3xl mb-1">Checkout</h1>
       <p className="text-charcoal-700 text-sm mb-8">
-        🔒 Demo payment mode — real gateway Phase 6 mein connect hoga. Test card: <b>4242 4242 4242 4242</b>
+        🔒 Demo payment mode — a real gateway connects in Phase 6. Test card: <b>4242 4242 4242 4242</b>
       </p>
 
       <form onSubmit={placeOrder} className="grid lg:grid-cols-[1fr_380px] gap-8 items-start">
@@ -227,12 +227,12 @@ export default function CheckoutPage() {
                   <label className="block"><span className={labelCls}>CVC</span>
                     <input value={form.cardCvc} onChange={(e) => setForm({ ...form, cardCvc: e.target.value.replace(/\D/g, "").slice(0, 4) })} placeholder="123" inputMode="numeric" className={inputCls} /></label>
                 </div>
-                <p className="text-xs text-sage-500">🔒 Card details store nahi hote — demo processing locally hoti hai. Production mein gateway ka tokenized flow use hoga.</p>
+                <p className="text-xs text-sage-500">🔒 Card details are not stored — demo processing happens locally. Production will use the gateway&apos;s tokenized flow.</p>
               </div>
             )}
             {pay !== "card" && (
               <p className="rounded-xl bg-sand-300/40 px-4 py-3 text-sm text-charcoal-700">
-                {PAY_METHODS.find((m) => m.id === pay).label} Phase 6 mein gateway selection ke baad enable hoga.
+                {PAY_METHODS.find((m) => m.id === pay).label} will be enabled after gateway selection in Phase 6.
               </p>
             )}
           </section>

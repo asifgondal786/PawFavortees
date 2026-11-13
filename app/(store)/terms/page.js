@@ -2,76 +2,76 @@ import InfoShell, { Section } from "@/components/InfoShell";
 
 export const metadata = {
   title: "Terms and Conditions",
-  description: "Terms of service for using PawFavoritees — orders, payments, accounts, returns and liability.",
+  description: "Terms of service for using PawFavoritees - orders, payments, accounts, returns and liability.",
 };
 
 export default function TermsPage() {
   return (
     <InfoShell
-      title="Terms and Conditions 📋"
-      subtitle="PawFavoritees website use karne se aap in terms se agree karte hain."
+      title="Terms and Conditions 🐾"
+      subtitle="By using the PawFavoritees website you agree to these terms."
       updated="November 2026"
     >
       <Section title="1. About These Terms">
         <p>
-          PawFavoritees ek online pet supplies store hai. Ye terms aap aur PawFavoritees ke darmiyan
-          site ke use, purchases aur related services ko govern karte hain.
+          PawFavoritees is an online pet supplies store. These terms govern the site&apos;s use, purchases
+          and related services between you and PawFavoritees.
         </p>
       </Section>
 
       <Section title="2. Orders & Pricing">
         <ul className="list-disc pl-6 space-y-2">
-          <li>Saari prices USD mein hain aur applicable sales tax checkout par add hoti hai.</li>
-          <li>Pricing ya product information ki typo ki soorat mein hum order cancel karne ka haq rakhte hain.</li>
-          <li>Order acceptance tab hota hai jab payment verify aur order status &ldquo;processing&rdquo; ho jaye.</li>
-          <li>Stock availability real-time nahi hoti — out-of-stock situation mein full refund process hota hai.</li>
+          <li>All prices are in USD and applicable sales tax is added at checkout.</li>
+          <li>In case of a typo in pricing or product information, we reserve the right to cancel the order.</li>
+          <li>An order is accepted when payment is verified and the order status becomes &ldquo;processing&rdquo;.</li>
+          <li>Stock availability is not real-time — in an out-of-stock situation a full refund is processed.</li>
         </ul>
       </Section>
 
       <Section title="3. Payments">
         <p>
-          Payments supported secure gateways ke through process hoti hain. Hum card details store nahi
-          karte. Failed ya declined payments ke liye order process nahi hota.
+          Payments are processed through supported secure gateways. We do not store card details.
+          Failed or declined payments mean the order is not processed.
         </p>
       </Section>
 
       <Section title="4. Shipping & Risk">
         <p>
-          Shipping estimate informational hai. Risk aur title delivery par customer ko transfer hota hai,
-          returns policy ke mutabiq.
+          Shipping estimates are informational. Risk and title transfer to the customer on delivery,
+          in line with the returns policy.
         </p>
       </Section>
 
       <Section title="5. Returns & Refunds">
-        <p>30-day return policy <a href="/return-policy" className="text-forest-600 underline">Return Policy</a> page par detail se document ki gayi hai aur isi ke tihat refunds process hote hain.</p>
+        <p>The 30-day return policy is documented in detail on the <a href="/return-policy" className="text-forest-600 underline">Return Policy</a> page, and refunds are processed accordingly.</p>
       </Section>
 
       <Section title="6. Accounts">
         <ul className="list-disc pl-6 space-y-2">
-          <li>Aap account information ki security ke liye responsible hain.</li>
-          <li>Fraud, abuse ya terms ki violation par account suspend ho sakta hai.</li>
+          <li>You are responsible for the security of your account information.</li>
+          <li>Accounts may be suspended for fraud, abuse or violation of these terms.</li>
         </ul>
       </Section>
 
       <Section title="7. Product Information & Health Disclaimer">
         <p>
-          Product descriptions supplier/manufacturer data par based hain. Koi bhi product veterinary
-          advice ka substitute nahi hai — pet ki health ke mamlaat mein qualified veterinarian se consult karein.
+          Product descriptions are based on supplier/manufacturer data. No product is a substitute for
+          veterinary advice — consult a qualified veterinarian about your pet&apos;s health.
         </p>
       </Section>
 
       <Section title="8. Intellectual Property">
-        <p>Site ka content, branding aur design PawFavoritees ki property hai — bina permission reproduce nahi karein.</p>
+        <p>The site&apos;s content, branding and design are the property of PawFavoritees — do not reproduce without permission.</p>
       </Section>
 
       <Section title="9. Limitation of Liability">
         <p>
-          Qanoon ke injaaz ke darmiyan, PawFavoritees ki liability aap ke order amount se zyada nahi hogi.
+          To the extent permitted by law, PawFavoritees&apos;s liability shall not exceed your order amount.
         </p>
       </Section>
 
       <Section title="10. Changes">
-        <p>Hum in terms ko update kar sakte hain; updated version isi page par publish hoga.</p>
+        <p>We may update these terms; the updated version will be published on this page.</p>
       </Section>
     </InfoShell>
   );

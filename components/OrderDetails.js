@@ -56,7 +56,7 @@ export default function OrderDetails() {
       <div className="max-w-xl mx-auto px-4 py-16 text-center">
         <p className="text-5xl mb-4">🐕💩</p>
         <h1 className="text-2xl mb-2">Order not found</h1>
-        <p className="text-charcoal-700 text-sm mb-6">Is order ki details is device par available nahi hain.</p>
+        <p className="text-charcoal-700 text-sm mb-6">Order details are not available on this device.</p>
         <Link href="/shop" className="inline-block bg-forest-600 text-white font-heading font-bold px-8 py-3 rounded-full hover:bg-forest-700 transition">Back to Shop</Link>
       </div>
     );

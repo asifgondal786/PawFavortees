@@ -27,7 +27,7 @@ export default function ResetPasswordPage() {
   useEffect(() => {
     (async () => {
       const sb = getSupabase();
-      if (!sb) { setError("Auth configured nahi hai."); return; }
+      if (!sb) { setError("Authentication is not configured."); return; }
       try {
         // Supabase v2 default implicit flow — tokens hash fragment mein aate hain
         const h = parseHash(window.location.hash);
@@ -36,17 +36,17 @@ export default function ResetPasswordPage() {
             access_token: h.access_token,
             refresh_token: h.refresh_token,
           });
-          if (error) throw new Error("Reset link invalid ya expire ho gaya.");
+          if (error) throw new Error("The reset link is invalid or has expired.");
           // hash clean kar do (token page history mein na rahe)
           window.history.replaceState(null, "", window.location.pathname);
           setReady(true);
         } else if (new URLSearchParams(window.location.search).get("code")) {
           // PKCE flow fallback
           const { error } = await sb.auth.exchangeCodeForSession(window.location.href);
-          if (error) throw new Error("Reset link invalid ya expire ho gaya.");
+          if (error) throw new Error("The reset link is invalid or has expired.");
           setReady(true);
         } else {
-          setError("Ye page reset link ke baghair nahi khulta. Pehle 'Forgot Password' se link lein.");
+          setError("This page does not open without a reset link. Please use 'Forgot Password' to get one.");
         }
       } catch (e) {
         setError(e.message);
@@ -58,11 +58,11 @@ export default function ResetPasswordPage() {
     e.preventDefault();
     setError("");
     if (form.password.length < 8) {
-      setError("Password kam se kam 8 characters ka hona chahiye.");
+      setError("Password must be at least 8 characters.");
       return;
     }
     if (form.password !== form.confirm) {
-      setError("Passwords match nahi kar rahe.");
+      setError("Passwords do not match.");
       return;
     }
     setLoading(true);
@@ -75,7 +75,7 @@ export default function ResetPasswordPage() {
       await sb.auth.signOut();
       router.push("/login?reset=ok");
     } catch (err) {
-      setError(err.message || "Password update fail ho gaya.");
+      setError(err.message || "Password update failed.");
       setLoading(false);
     }
   };
@@ -85,11 +85,11 @@ export default function ResetPasswordPage() {
       <div className="text-center mb-8">
         <span className="text-5xl">🔒</span>
         <h1 className="text-3xl mt-3">Set New Password</h1>
-        <p className="text-charcoal-700 text-sm mt-2">Naya password choose karein — purana replace ho jayega.</p>
+        <p className="text-charcoal-700 text-sm mt-2">Choose a new password — it will replace the old one.</p>
       </div>
       <div className="rounded-3xl bg-white border border-sage-300/50 shadow-sm p-7">
         {done ? (
-          <p className="text-sm text-forest-600 font-semibold text-center">✓ Password update ho gaya — Sign In par le ja rahe hain…</p>
+          <p className="text-sm text-forest-600 font-semibold text-center">✓ Password updated — redirecting to Sign In…</p>
         ) : error ? (
           <div>
             <p className="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">{error}</p>

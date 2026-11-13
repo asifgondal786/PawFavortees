@@ -54,7 +54,7 @@ export default function ContactForm() {
       <label className="block">
         <span className="text-sm font-semibold">Message</span>
         <textarea required rows={5} value={form.message} onChange={onChange("message")}
-          placeholder="Order number likhna na bhoolen agar order ke bare mein hai…"
+          placeholder="Include your order number if you have one…"
           className="mt-1 w-full rounded-xl border border-sage-300 bg-white px-4 py-2.5 text-sm outline-none focus:border-forest-500" />
       </label>
       <button className="justify-self-start bg-forest-600 text-white font-heading font-bold px-8 py-3 rounded-full hover:bg-forest-700 transition">

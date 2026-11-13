@@ -70,7 +70,7 @@ export default async function AdminOrdersPage({ searchParams }) {
                 </tr>
               ))}
               {orders.length === 0 && (
-                <tr><td colSpan={7} className="px-5 py-10 text-center text-sage-500">Is status mein koi order nahi.</td></tr>
+                <tr><td colSpan={7} className="px-5 py-10 text-center text-sage-500">No orders in this status.</td></tr>
               )}
             </tbody>
           </table>

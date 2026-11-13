@@ -64,14 +64,14 @@ export default async function AdminProductsPage() {
                 </tr>
               ))}
               {products.length === 0 && (
-                <tr><td colSpan={7} className="px-5 py-10 text-center text-sage-500">Koi product nahi — pehla product add karo!</td></tr>
+                <tr><td colSpan={7} className="px-5 py-10 text-center text-sage-500">No products yet — add the first one!</td></tr>
               )}
             </tbody>
           </table>
         </div>
       </div>
       <p className="text-xs text-sage-500 mt-4">
-        ℹ️ Remove soft delete hai (DB mein history bachta hai) — Phase 6: WooCommerce catalog se two-way sync hoga.
+        ℹ️ Remove is a soft delete (history stays in the DB) — Phase 6: two-way sync with the WooCommerce catalog.
       </p>
     </div>
   );

@@ -13,7 +13,7 @@ export default async function AdminDashboard() {
   const processingN = orders.filter((o) => o.status === "processing").length;
 
   const statCards = [
-    { label: "Revenue", value: `$${rev.toFixed(2)}`, icon: "💵", sub: ordersN ? `${ordersN} orders se live` : "Abhi koi order nahi", up: ordersN > 0 },
+    { label: "Revenue", value: `$${rev.toFixed(2)}`, icon: "💵", sub: ordersN ? `live from ${ordersN} orders` : "No orders yet", up: ordersN > 0 },
     { label: "Orders", value: ordersN, icon: "🧾", sub: processingN ? `${processingN} processing` : "Sab settle ho gaye", up: true },
     { label: "Avg Order Value", value: `$${aovV.toFixed(2)}`, icon: "📈", sub: ordersN ? "Supabase se live" : "Mock data", up: ordersN > 0 },
     { label: "Products Live", value: products.length, icon: "📦", sub: "2 categories active", up: null },
@@ -90,7 +90,7 @@ export default async function AdminDashboard() {
               </div>
             ))}
             {orders.length === 0 && (
-              <p className="text-sm text-charcoal-700">Abhi tak koi order nahi — pehla order checkout se aayega. 🐾</p>
+              <p className="text-sm text-charcoal-700">No orders yet — the first order will come through checkout. 🐾</p>
             )}
           </div>
         </div>
@@ -118,7 +118,7 @@ export default async function AdminDashboard() {
           <div className="rounded-2xl bg-white border border-sage-300/50 p-6">
             <h2 className="font-heading font-bold text-lg mb-4">⚠️ Low Stock Alerts</h2>
             {lowStock.length === 0 ? (
-              <p className="text-sm text-charcoal-700">Sab stock healthy hai — koi alert nahi. ✅</p>
+              <p className="text-sm text-charcoal-700">All stock healthy — no alerts. ✅</p>
             ) : (
               <div className="space-y-2">
                 {lowStock.map((p) => (

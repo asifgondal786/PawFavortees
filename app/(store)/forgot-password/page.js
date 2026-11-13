@@ -25,7 +25,7 @@ export default function ForgotPasswordPage() {
       if (error) throw new Error(error.message);
       setSent(true);
     } catch (err) {
-      setError(err.message || "Reset email nahi bhej saken.");
+      setError(err.message || "Could not send the reset email.");
     }
     setLoading(false);
   };
@@ -37,7 +37,7 @@ export default function ForgotPasswordPage() {
           <p className="text-5xl mb-4">📧</p>
           <h1 className="text-2xl">Check your inbox</h1>
           <p className="text-sm text-charcoal-700 mt-3">
-            Reset link <b>{email}</b> par bhej diya gaya hai. Spam folder bhi check kar lein.
+            A reset link has been sent to <b>{email}</b>. Please also check your spam folder.
           </p>
           <Link href="/login" className="inline-block mt-6 text-forest-600 font-semibold text-sm hover:underline">
             ← Back to sign in
@@ -52,7 +52,7 @@ export default function ForgotPasswordPage() {
       <div className="text-center mb-8">
         <span className="text-5xl">🔑</span>
         <h1 className="text-3xl mt-3">Forgot Password</h1>
-        <p className="text-charcoal-700 text-sm mt-2">Apna email daalein — hum reset link bhej denge.</p>
+        <p className="text-charcoal-700 text-sm mt-2">Enter your email — we will send you a reset link.</p>
       </div>
       <div className="rounded-3xl bg-white border border-sage-300/50 shadow-sm p-7">
         {error && <p className="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2.5 mb-4">{error}</p>}

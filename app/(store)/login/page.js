@@ -17,7 +17,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
     if (!form.email || !form.password) {
-      setError("Email aur password dono zaroori hain.");
+      setError("Both email and password are required.");
       return;
     }
     setLoading(true);
@@ -25,7 +25,7 @@ export default function LoginPage() {
       await signIn(form.email.trim(), form.password);
       router.push("/account");
     } catch (err) {
-      setError(err.message || "Sign in fail ho gaya.");
+      setError(err.message || "Sign in failed.");
       setLoading(false);
     }
   };
@@ -41,12 +41,12 @@ export default function LoginPage() {
       <div className="rounded-3xl bg-white border border-sage-300/50 shadow-sm p-7">
         <div className="rounded-xl bg-sage-100/70 px-4 py-2.5 text-xs text-charcoal-700 mb-5">
           💡 <b>{supabaseConfigured ? "Real authentication (Supabase)" : "Demo mode"}</b> —
-          {supabaseConfigured ? " account database mein hai, har device par kaam karega." : " koi bhi email/password chalega."}
+          {supabaseConfigured ? " your account lives in the database, and works on every device." : " any email/password works."}
         </div>
 
         {resetOk && (
           <div className="rounded-xl bg-forest-100 text-forest-700 text-sm px-4 py-2.5 mb-4">
-            ✓ Password update ho gaya — ab naye password se sign in karein.
+            ✓ Password updated — sign in with your new password.
           </div>
         )}
 

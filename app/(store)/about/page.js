@@ -2,7 +2,7 @@ import Link from "next/link";
 import InfoShell, { Section } from "@/components/InfoShell";
 
 export const metadata = {
-  title: "About Us — Love Them. Spoil Them.",
+  title: "About Us - Love Them. Spoil Them.",
   description: "PawFavoritees is a USA-focused pet supplies store built by pet parents, for pet parents. Learn our story, mission and values.",
 };
 
@@ -10,37 +10,37 @@ export default function AboutPage() {
   return (
     <InfoShell
       title="About PawFavoritees 🐾"
-      subtitle="Love Them. Spoil Them. — ek simple promise jo har product choice ke peeche hai."
+      subtitle="Love Them. Spoil Them. — a simple promise behind every product we choose."
     >
       <Section title="Our Story">
         <p>
-          PawFavoritees ek USA-targeted pet supplies store hai jo pet parents ke liye pet parents ne banaya hai.
-          Hum ne dekha ke quality products dhoondhna ya to mushkil hai ya overpriced — is liye hum ne ek
-          curated store banaya jahan har product safety, materials aur durability ke hisab se vetted hota hai.
+          PawFavoritees is a USA-focused pet supplies store built by pet parents, for pet parents.
+          We saw that finding quality products is either hard or overpriced — so we created a curated
+          store where every product is vetted for safety, materials, and durability.
         </p>
       </Section>
 
       <Section title="Our Mission">
         <p>
-          Humara mission simple hai: har pet parent ko <b>trustworthy, premium-quality aur affordable</b> pet
-          products dena — transparent shipping, easy returns aur real customer care ke saath.
+          Our mission is simple: give every pet parent <b>trustworthy, premium-quality, and affordable</b> pet
+          products — with transparent shipping, easy returns, and real customer care.
         </p>
       </Section>
 
       <Section title="What Makes Us Different">
         <ul className="list-disc pl-6 space-y-2">
-          <li><b>Curated, not crowded:</b> hum sirf wo products list karte hain jo hum khud apne pets ko denge.</li>
-          <li><b>Quality checked:</b> materials, safety aur durability har product ke liye verify hoti hai.</li>
-          <li><b>Fast USA shipping:</b> qualifying orders par free shipping, 1 business day dispatch.</li>
-          <li><b>Easy returns:</b> 30-day hassle-free returns — happy pets ya paisa wapas.</li>
-          <li><b>Real support:</b> koi bot nahi, real humans jo pets ke bare mein josh se baat karte hain.</li>
+          <li><b>Curated, not crowded:</b> we only list products we would give to our own pets.</li>
+          <li><b>Quality checked:</b> materials, safety, and durability are verified for every product.</li>
+          <li><b>Fast USA shipping:</b> free shipping on qualifying orders, dispatched within 1 business day.</li>
+          <li><b>Easy returns:</b> 30-day hassle-free returns — a happy pet or your money back.</li>
+          <li><b>Real support:</b> no bots — real humans who love talking about pets.</li>
         </ul>
       </Section>
 
       <Section title="Where We're Headed">
         <p>
-          Ye journey abhi shuru ho rahi hai. Aage hum pet profiles, personalized recommendations aur
-          educational guides add kar rahe hain taake shopping sirf transaction nahi — ek helpful experience lage.
+          This journey is just beginning. Next up: pet profiles, personalized recommendations, and
+          educational guides — so shopping feels less like a transaction and more like a helpful experience.
         </p>
         <p>
           <Link href="/shop" className="text-forest-600 font-semibold hover:underline">Shop the collection →</Link>

@@ -13,7 +13,7 @@ export default function TrackOrderForm() {
     setError("");
     setResult(null);
     if (!form.order.trim() || !form.email.trim()) {
-      setError("Order number aur email dono zaroori hain.");
+      setError("Both order number and email are required.");
       return;
     }
     setLoading(true);
@@ -23,12 +23,12 @@ export default function TrackOrderForm() {
         const d = await res.json();
         setResult(d.order);
       } else if (res.status === 404) {
-        setError("Is order number + email combination se koi order nahi mila. Details check karein.");
+        setError("No order found for this order number + email combination. Please check the details.");
       } else {
-        setError("Kuch ghalat ho gaya — thori dair baad try karein.");
+        setError("Something went wrong — please try again in a moment.");
       }
     } catch {
-      setError("Network issue — thori dair baad try karein.");
+      setError("Network issue — please try again in a moment.");
     }
     setLoading(false);
   };
@@ -127,8 +127,8 @@ export default function TrackOrderForm() {
       {!result && !error && (
         <div className="rounded-2xl border border-dashed border-sage-300 p-8 text-center">
           <p className="text-4xl mb-3">📦</p>
-          <p className="text-sm text-charcoal-700">Order number order confirmation email mein aur &ldquo;Order Received&rdquo; page par milta hai.</p>
-          <Link href="/contact" className="inline-block mt-4 text-sm font-semibold text-forest-600 hover:underline">Order ka email nahi mila? Contact us →</Link>
+          <p className="text-sm text-charcoal-700">You can find your order number in the order confirmation email and on the &ldquo;Order Received&rdquo; page.</p>
+          <Link href="/contact" className="inline-block mt-4 text-sm font-semibold text-forest-600 hover:underline">Didn&apos;t receive the order email? Contact us →</Link>
         </div>
       )}
     </div>
