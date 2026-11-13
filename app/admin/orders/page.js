@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAdminOrders, STATUS_STYLES } from "@/lib/adminData";
+import OrderStatusEditor from "@/components/admin/OrderStatusEditor";
 
 export const metadata = { title: "Orders" };
 
@@ -63,9 +64,7 @@ export default async function AdminOrdersPage({ searchParams }) {
                     <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${STATUS_STYLES[o.status]}`}>{o.status}</span>
                   </td>
                   <td className="px-5 py-3">
-                    <button className="text-xs font-semibold text-forest-600 hover:underline cursor-not-allowed opacity-60" title="Phase 6 — WooCommerce order update API se enable hoga">
-                      View / Update
-                    </button>
+                    <OrderStatusEditor orderNumber={o.id} status={o.status} />
                   </td>
                 </tr>
               ))}

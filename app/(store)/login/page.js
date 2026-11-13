@@ -3,15 +3,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
+import { supabaseConfigured } from "@/lib/supabase";
 
 export default function LoginPage() {
-  const login = useAuth((s) => s.login);
+  const signIn = useAuth((s) => s.signIn);
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "", remember: true });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     setError("");
     if (!form.email || !form.password) {
@@ -19,13 +20,13 @@ export default function LoginPage() {
       return;
     }
     setLoading(true);
-    // Demo login — Phase 7: WooCommerce customer auth (JWT/session) se replace hoga.
-    setTimeout(() => {
-      const name = form.email.split("@")[0];
-      const firstName = name.charAt(0).toUpperCase() + name.slice(1);
-      login({ firstName, lastName: "", email: form.email });
+    try {
+      await signIn(form.email.trim(), form.password);
       router.push("/account");
-    }, 900);
+    } catch (err) {
+      setError(err.message || "Sign in fail ho gaya.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -38,7 +39,8 @@ export default function LoginPage() {
 
       <div className="rounded-3xl bg-white border border-sage-300/50 shadow-sm p-7">
         <div className="rounded-xl bg-sage-100/70 px-4 py-2.5 text-xs text-charcoal-700 mb-5">
-          💡 <b>Demo mode:</b> koi bhi email/password chalega — Phase 7 mein real accounts connect honge.
+          💡 <b>{supabaseConfigured ? "Real authentication (Supabase)" : "Demo mode"}</b> —
+          {supabaseConfigured ? " account database mein hai, har device par kaam karega." : " koi bhi email/password chalega."}
         </div>
 
         {error && <p className="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2.5 mb-4">{error}</p>}

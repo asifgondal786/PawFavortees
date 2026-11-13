@@ -77,6 +77,34 @@ export async function POST(request) {
   }
 }
 
+const ALLOWED_STATUSES = ["pending", "paid", "processing", "shipped", "completed", "cancelled", "refunded", "failed"];
+
+// Admin status update — { orderNumber, status }
+export async function PATCH(request) {
+  const sb = getSupabaseAdmin();
+  if (!sb) return NextResponse.json({ error: "Database not configured" }, { status: 503 });
+  try {
+    const body = await request.json();
+    const orderNumber = String(body.orderNumber || "").trim().toUpperCase();
+    const status = String(body.status || "").trim().toLowerCase();
+    if (!orderNumber) return NextResponse.json({ error: "orderNumber required" }, { status: 400 });
+    if (!ALLOWED_STATUSES.includes(status)) {
+      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    }
+    const { data, error } = await sb
+      .from("orders")
+      .update({ status })
+      .eq("order_number", orderNumber)
+      .select("order_number, status")
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!data) return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    return NextResponse.json({ ok: true, orderNumber: data.order_number, status: data.status });
+  } catch (e) {
+    return NextResponse.json({ error: e.message || "Update failed" }, { status: 500 });
+  }
+}
+
 export async function GET(request) {
   const sb = getSupabaseAdmin();
   if (!sb) return NextResponse.json({ error: "Database not configured" }, { status: 503 });

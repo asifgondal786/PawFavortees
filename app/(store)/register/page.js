@@ -3,17 +3,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useAuth } from "@/lib/auth";
+import { supabaseConfigured } from "@/lib/supabase";
 
 export default function RegisterPage() {
-  const login = useAuth((s) => s.login);
+  const signUp = useAuth((s) => s.signUp);
   const router = useRouter();
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "", confirm: "", terms: false });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmSent, setConfirmSent] = useState(false);
 
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     setError("");
     if (form.password.length < 8) {
@@ -29,11 +31,27 @@ export default function RegisterPage() {
       return;
     }
     setLoading(true);
-    // Demo register — Phase 7: WooCommerce customer creation API se connect hoga.
-    setTimeout(() => {
-      login({ firstName: form.firstName, lastName: form.lastName, email: form.email });
+    try {
+      const res = await signUp({
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: form.email.trim(),
+        password: form.password,
+      });
+      if (res.needsConfirm) {
+        // Email confirmation ON hai — user ko verify karne bolo
+        setConfirmSent(true);
+        setLoading(false);
+        return;
+      }
       router.push("/account");
-    }, 900);
+    } catch (err) {
+      const msg = (err.message || "").includes("already registered")
+        ? "Ye email pehle se registered hai — Sign in karein."
+        : err.message || "Account create nahi hua.";
+      setError(msg);
+      setLoading(false);
+    }
   };
 
   return (
@@ -46,8 +64,15 @@ export default function RegisterPage() {
 
       <div className="rounded-3xl bg-white border border-sage-300/50 shadow-sm p-7">
         <div className="rounded-xl bg-sage-100/70 px-4 py-2.5 text-xs text-charcoal-700 mb-5">
-          💡 <b>Demo mode:</b> account locally save hota hai — Phase 7 mein WooCommerce se connect hoga.
+          💡 <b>{supabaseConfigured ? "Real authentication (Supabase)" : "Demo mode"}</b> —
+          {supabaseConfigured ? " account database mein save hoga, har device par kaam karega." : " account locally save hota hai."}
         </div>
+
+        {confirmSent && (
+          <div className="rounded-xl bg-blue-50 border border-blue-200 text-blue-700 text-sm px-4 py-3 mb-4">
+            📧 Confirmation email <b>{form.email}</b> par bhej diya gaya hai — inbox mein link click karein, phir Sign In karein.
+          </div>
+        )}
 
         {error && <p className="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2.5 mb-4">{error}</p>}
 

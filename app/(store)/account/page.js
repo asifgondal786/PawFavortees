@@ -62,9 +62,12 @@ export default function AccountPage() {
           }
         }
       } catch {}
-      // 2) localStorage backup (offline/demo orders)
+      // 2) localStorage backup (offline/demo orders) — sirf is user ke orders
       let local = [];
-      try { local = JSON.parse(localStorage.getItem("pawfav-orders") || "[]"); } catch {}
+      try {
+        local = JSON.parse(localStorage.getItem("pawfav-orders") || "[]")
+          .filter((o) => !o.email || o.email.toLowerCase() === user.email.toLowerCase());
+      } catch {}
       if (alive) {
         setOrders(local.map(localToView).sort((a, b) => new Date(b.date) - new Date(a.date)));
         setSource(local.length ? "local" : "db");
