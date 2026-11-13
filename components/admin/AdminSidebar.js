@@ -42,7 +42,7 @@ export function AdminSidebar() {
                   className={`flex items-center gap-3 px-3 py-2 rounded-lg text-[13.5px] font-medium transition-all ${
                     active
                       ? "bg-forest-600 text-white shadow-sm"
-                      : "text-cream-100/65 hover:text-cream-100 hover:bg-cream-100/10"
+                      : "text-cream-100/75 hover:text-cream-100 hover:bg-cream-100/10"
                   }`}>
                   <span className={`text-[15px] w-5 text-center shrink-0 ${active ? "opacity-100" : "opacity-70"}`}>{n.icon}</span>
                   {n.label}
